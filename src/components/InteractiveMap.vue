@@ -1,4 +1,5 @@
 <template>
+  <PhPlayCircle :size="32" color="hotpink" @click="onClickPlay" />
   <Suspense>
     <highcharts
       :constructor-type="'mapChart'"
@@ -11,25 +12,33 @@
 <script setup>
 import { ref } from "vue";
 import { MAP_DATA, MAP_COLORS } from "@/utils/Constants";
+import ApiUserAudio from "@/api/api.user-audio";
+import { PhPlayCircle } from "@phosphor-icons/vue";
 
 // const data = prepareData(topology);
 const topology = await fetch("/geo/russian_regions.json").then((response) =>
   response.json()
 );
 
+const onClickPlay = async () => {
+  const response = await ApiUserAudio.getById(27);
+  console.warn(response.data);
+};
+
 const chartCallback = (chart) => {
   console.error(chart);
 };
 
-const onClickSeries = (event) => {
+const onClickSeries = async (event) => {
   //   const idSelectedArea = event.point.index;
-  console.warn(event);
-  const hcKey = event.point.properties["hc-key"];
-  console.log(chartOptions.value);
-  const selectedSerie = chartOptions.value.series[0].data.filter(
-    (serie) => serie[0] === hcKey
-  );
-  console.error(selectedSerie[0]);
+  // console.warn(event);
+  // const hcKey = event.point.properties["hc-key"];
+  // console.log(chartOptions.value);
+  // const selectedSerie = chartOptions.value.series[0].data.filter(
+  //   (serie) => serie[0] === hcKey
+  // );
+  // console.error(selectedSerie[0]);
+  console.log(event);
 };
 
 const chartOptions = ref({
@@ -67,5 +76,3 @@ const chartOptions = ref({
   ],
 });
 </script>
-
- 
